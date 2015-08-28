@@ -5,6 +5,7 @@ setuptools.setup(
 		'cffi',
 	],
 	version = '1.1',
-	name = 'signalfd',
-	packages = ['signalfd'],
+	name = 'sigfd',
+	py_modules=['sigfd'],
+#	packages = ['signalfd'],
 )

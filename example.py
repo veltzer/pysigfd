@@ -15,14 +15,13 @@ git@github.com:larsks/python-signalfd.git
 import os # for getpid
 import sys # for stdin
 import select # for poll, POLLIN
-import signalfd.signalfd # for sigfd
-import signalfd.sigset # for sigset
+import sigfd # for sigset, sigfd
 
 # create a signal set containing all signals.
-mask = signalfd.sigset.sigset()
+mask = sigfd.sigset()
 mask.fill()
 
-with signalfd.signalfd.sigfd(mask) as fd:
+with sigfd.sigfd(mask) as fd:
 	poll = select.poll()
 	poll.register(fd, select.POLLIN)
 	poll.register(sys.stdin, select.POLLIN)
