@@ -2,6 +2,7 @@ import os # for close, read, errno
 import signalfd.common # for ffi, crt
 import signalfd.sigset # for sigprocmask
 import signalfd.constants # for SIG_BLOCK
+import errno # for errorcode
 
 signalfd.common.ffi.cdef('''
 struct signalfd_siginfo {
@@ -42,10 +43,9 @@ class sigfd(object):
 		self.signals = signals
 		self.fd = signalfd.common.crt.signalfd(-1, self.signals.sigset, self.flags)
 		if self.fd==-1:
-			myerrno=os.errno
-			print(myerrno)
-			print(os.strerror(myerrno))
-			raise OSError(myerrno, os.strerror(myerrno))
+			myerrno=signalfd.common.ffi.errno
+			stderrno=errno.errorcode[myerrno]
+			raise OSError(stderrno, os.strerror(myerrno))
 
 	def __enter__(self):
 		self.oldsignals=signalfd.sigset.sigprocmask(self.signals, signalfd.constants.SIG_BLOCK)
