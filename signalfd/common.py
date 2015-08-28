@@ -1,6 +1,6 @@
-from cffi import FFI
+import cffi # for FFI
 
-ffi = FFI()
+ffi = cffi.FFI()
 crt = ffi.dlopen(None)
 
 ffi.cdef('''
