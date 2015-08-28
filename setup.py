@@ -1,11 +1,10 @@
-#!/usr/bin/python
-
-import setuptools
+import setuptools # for setup
 
 setuptools.setup(
-    install_requires=open('requires.txt').readlines(),
-    version = 1,
-    name = 'signalfd',
-    packages = ['signalfd'],
+	install_requires=[
+		'cffi',
+	],
+	version = '1.1',
+	name = 'signalfd',
+	packages = ['signalfd'],
 )
-

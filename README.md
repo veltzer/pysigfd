@@ -1,7 +1,7 @@
 # signalfd for Python
 
 This is a [cffi][1] based module for Python that makes available the
-`signalfd()` system call, as well as all of `sigsetops(3)`.  The
+`signalfd()` system call, as well as all of `sigsetops(3)`. The
 `signalfd()` calls allows your code to receive signals via a file
 descriptor, rather than via the normal asynchronous delivery method,
 which makes signals much more compatible with event based solutions
@@ -18,32 +18,32 @@ You will need the [cffi][2] module for Python.
 
 ## Examples
 
-    import sys
-    import signal
-    import select
-    from signalfd import signalfd, sigset
+	import sys
+	import signal
+	import select
+	from signalfd import signalfd, sigset
 
-    # Create a signal set containing all signals.
-    mask = sigset()
-    mask.fill()
+	# Create a signal set containing all signals.
+	mask = sigset()
+	mask.fill()
 
-    with signalfd(mask) as fd:
-        poll = select.poll()
-        poll.register(fd,  select.POLLIN)
-        poll.register(sys.stdin, select.POLLIN)
+	with signalfd(mask) as fd:
+		poll = select.poll()
+		poll.register(fd, select.POLLIN)
+		poll.register(sys.stdin, select.POLLIN)
 
-        # Print signals as they are received until user presses
-        # <RETURN>.
-        while True:
-            events = dict(poll.poll())
+		# Print signals as they are received until user presses
+		# <RETURN>.
+		while True:
+			events = dict(poll.poll())
 
-            if fd.fileno() in events:
-                info = fd.info()
-                print 'received signal %d' % info.ssi_signo
+			if fd.fileno() in events:
+				info = fd.info()
+				print 'received signal %d' % info.ssi_signo
 
-            if sys.stdin.fileno() in events:
-                print 'all done'
-                break
+			if sys.stdin.fileno() in events:
+				print 'all done'
+				break
 
 ## License
 
@@ -57,9 +57,8 @@ the Free Software Foundation, either version 3 of the License, or
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
+along with this program. If not, see <http://www.gnu.org/licenses/>.

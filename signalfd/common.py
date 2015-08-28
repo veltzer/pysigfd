@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 from cffi import FFI
 
 ffi = FFI()
@@ -11,4 +9,3 @@ typedef int int32_t;
 typedef unsigned long int uint64_t;
 typedef unsigned char uint8_t;
 ''')
-
