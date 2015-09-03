@@ -2,5 +2,5 @@
 .*.sw?
 /build/
 /dist/
-/signalfd.egg-info/
+/sigfd.egg-info/
 __pycache__
