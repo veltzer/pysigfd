@@ -1,4 +1,4 @@
-# signalfd for Python
+# sigfd for Python
 
 This is a [cffi][1] based module for Python that makes available the
 `signalfd()` system call, as well as all of `sigsetops(3)`. The
@@ -18,36 +18,38 @@ You will need the [cffi][2] module for Python.
 
 ## Examples
 
-	import sys
-	import signal
-	import select
-	from signalfd import signalfd, sigset
+	import os # for getpid
+	import sys # for stdin
+	import select # for poll, POLLIN
+	import sigfd # for sigset, sigfd
 
-	# Create a signal set containing all signals.
-	mask = sigset()
+	# create a signal set containing all signals.
+	mask = sigfd.sigset()
 	mask.fill()
 
-	with signalfd(mask) as fd:
+	with sigfd.sigfd(mask) as fd:
 		poll = select.poll()
 		poll.register(fd, select.POLLIN)
 		poll.register(sys.stdin, select.POLLIN)
 
-		# Print signals as they are received until user presses
-		# <RETURN>.
+		# Print signals as they are received until user presses <RETURN>.
+
+		print('=' * 70)
+		print('Send signals to this process (%d) or press RETURN to exit.' % os.getpid())
+		print('=' * 70)
+
 		while True:
 			events = dict(poll.poll())
-
 			if fd.fileno() in events:
 				info = fd.info()
-				print 'received signal %d' % info.ssi_signo
-
+				print('received signal %d' % info.ssi_signo)
 			if sys.stdin.fileno() in events:
-				print 'all done'
+				print('all done')
 				break
 
 ## License
 
-signalfd for Python
+sigalfd for Python
 Copyright (C) 2013 Lars Kellogg-Stedman <lars@oddbit.com>
 
 This program is free software: you can redistribute it and/or modify
