@@ -1,2 +1,2 @@
 #!/bin/sh
-python3 setup.py sdist upload -r pypi
+python3 setup.py sdist upload -r pypi --identity="Mark Veltzer" --sign

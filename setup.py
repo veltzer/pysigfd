@@ -9,7 +9,7 @@ setuptools.setup(
 	install_requires=[
 		'cffi',
 	],
-	version = '1.1',
+	version = '1.2',
 	name = 'sigfd',
 	py_modules=['sigfd'],
 
