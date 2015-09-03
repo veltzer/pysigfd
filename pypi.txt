@@ -1,0 +1,6 @@
+Here is how to upload to pypi:
+1. write the ~/.pypirc file (DONE).
+2. register the project using:
+	python3 setup.py register -r pypi
+3. upload:
+	python3 setup.py sdist upload -r pypi
