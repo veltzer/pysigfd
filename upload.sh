@@ -2,5 +2,6 @@
 # via setuptools
 #python3 setup.py sdist upload -r pypi --identity="Mark Veltzer" --sign
 # via twine
-python3 setup.py sdist --identity="Mark Veltzer" --sign
+rm -rf dist
+python3 setup.py sdist
 twine upload dist/*
