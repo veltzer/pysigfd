@@ -1,7 +1,5 @@
 .PHONY: all
 all:
-	$(info doing [$@])
-	$(info Tell me what to do...)
 	@true
 
 .PHONY: clean_old
