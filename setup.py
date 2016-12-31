@@ -1,27 +1,21 @@
-import setuptools # for setup
-import sys # for version_info, exit
-import pypandoc # for convert
-
-if sys.version_info<(3,):
-    print('This module is a python 3 module only')
-    sys.exit(1)
-
-read_md = lambda f: pypandoc.convert(f, 'rst')
+import setuptools
+import pypandoc
 
 setuptools.setup(
-    install_requires=[
+    name = 'pysigfd',
+    version = '1.3.0',
+    description = 'pysigfd is a module to help you deal with signals within python using the linux signal file description construct',
+    long_descriptioni = pypandoc.convert(('README.md', 'rst'),
+    url = 'https://github.com/veltzer/pysigfd', 
+    author =i 'Mark Veltzer',
+    author_email = 'mark.veltzer@gmail.com',
+    license = 'PSF',
+    classifiers = [
+    ],
+    keywords = 'signalfd python3 linux',
+    package_dir = {'': 'src'},
+    packages = setuptools.find_packages('src'),
+    install_requires = [
         'cffi',
     ],
-    version = '1.3',
-    name = 'sigfd',
-    long_description=read_md('README.md'),
-    py_modules=['sigfd'],
-
-    # my details
-    author='Mark Veltzer',
-    author_email = 'mark.veltzer@gmail.com',
-    description = 'This is a python signalfd interface module',
-    license = 'PSF',
-    keywords = 'signalfd python3 linux',
-    url = 'https://github.com/veltzer/python-sigfd', 
 )
