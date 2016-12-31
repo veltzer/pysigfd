@@ -5,7 +5,7 @@ setuptools.setup(
     name = 'pysigfd',
     version = '1.3.0',
     description = 'pysigfd is a module to help you deal with signals within python using the linux signal file description construct',
-    long_descriptioni = pypandoc.convert('README.md', 'rst'),
+    long_description = pypandoc.convert('README.md', 'rst'),
     url = 'https://github.com/veltzer/pysigfd', 
     author = 'Mark Veltzer',
     author_email = 'mark.veltzer@gmail.com',
