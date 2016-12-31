@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-'''
+"""
 This is an example of using the git based signalfd module
 
 The URL for this example:
@@ -10,18 +10,20 @@ References:
 http://blog.oddbit.com/2013/11/28/a-python-interface-to-signalfd/
 https://github.com/larsks/python-signalfd/tree/master/signalfd
 git@github.com:larsks/python-signalfd.git
-'''
+"""
 
-import os # for getpid
-import sys # for stdin
-import select # for poll, POLLIN
-import sigfd # for sigset, sigfd
+import os
+import sys
+import select
+import pysigfd
 
 # create a signal set containing all signals.
-mask = sigfd.sigset()
+from pysigfd.pysigfd import SigSet
+
+mask = SigSet()
 mask.fill()
 
-with sigfd.sigfd(mask) as fd:
+with pysigfd.pysigfd.sigfd(mask) as fd:
     poll = select.poll()
     poll.register(fd, select.POLLIN)
     poll.register(sys.stdin, select.POLLIN)

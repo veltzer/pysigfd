@@ -1,10 +1,7 @@
-import os # for close, read, stderr
-import errno # for errorcode
-import cffi # for FFI
+import os
+import errno
+import cffi
 
-#############
-# constants #
-#############
 SFD_NONBLOCK = 0o00004000
 SFD_CLOEXEC = 0o02000000
 
@@ -12,11 +9,9 @@ SIG_BLOCK = 0
 SIG_UNBLOCK = 1
 SIG_SETMASK = 2
 
-#########################
-# module initialisation #
-#########################
 ffi = None
 crt = None
+
 
 def init():
     global ffi, crt
@@ -56,37 +51,45 @@ def init():
             uint8_t pad[48]; /* Pad size to 128 bytes (allow for additional fields in the future) */
         };
         int signalfd(int fd, const sigset_t *mask, int flags);
-    ''' % (1024/(8 * ffi.sizeof('unsigned long int'))))
+    ''' % (1024 / (8 * ffi.sizeof('unsigned long int'))))
+
 
 init()
 
-'''
-    This is a thin wrapper over sigsetops(3)
-'''
-class sigset(object):
-    def __init__ (self, signals=None):
+
+class SigSet(object):
+    """
+        This is a thin wrapper over sigsetops(3)
+    """
+
+    def __init__(self, signals=None):
         self.sigset = ffi.new('sigset_t *')
         self.empty()
         if signals is not None:
             self.sigset = signals
 
     '''Initialize the signal set to empty'''
+
     def empty(self):
         crt.sigemptyset(self.sigset)
 
     '''Initialize the signal set to full, including all signals'''
+
     def fill(self):
         crt.sigfillset(self.sigset)
 
     '''Add the specified signal to the signal set'''
+
     def add(self, sig):
         crt.sigaddset(self.sigset, sig)
 
     '''Remove the specified signal from the signal set'''
+
     def remove(self, sig):
         crt.sigdelset(self.sigset, sig)
 
     '''Test if the specified signal is a member of the signal set'''
+
     def ismember(self, sig):
         return crt.sigismember(self.sigset, sig) == 1
 
@@ -96,11 +99,12 @@ class sigset(object):
                 yield i
 
     def get_set(self):
-        s=set()
+        s = set()
         for i in range(0, 32):
             if self.ismember(i):
                 s.add(i)
         return s
+
 
 '''
     Examine and change blocked signals
@@ -108,24 +112,28 @@ class sigset(object):
     - `mode` controls how sigprocmask() interprets the signal mask (see
     below)
 '''
-def sigprocmask(signals, mode=SIG_SETMASK):
-    if not mode in [SIG_BLOCK, SIG_UNBLOCK, SIG_SETMASK]:
-        raise ValueError('invalid mode')
-    oldsignals = ffi.new('sigset_t *')
-    res = crt.sigprocmask(mode, signals.sigset, oldsignals)
-    if res == -1:
-        myerrno=ffi.errno
-        stderrno=errno.errorcode[myerrno]
-        raise OSError(stderrno, os.strerror(myerrno))
-    return sigset(oldsignals)
 
-'''
-    signalfd(signal_set, [flags]) -> signalfd object
-    Create a signalfd object for receiving the set of signals specified as
-    a sigset object.
-'''
+
+def sigprocmask(signals, mode=SIG_SETMASK):
+    if mode not in [SIG_BLOCK, SIG_UNBLOCK, SIG_SETMASK]:
+        raise ValueError('invalid mode')
+    old_signals = ffi.new('sigset_t *')
+    res = crt.sigprocmask(mode, signals.sigset, old_signals)
+    if res == -1:
+        tmp_errno = ffi.errno
+        std_errno = errno.errorcode[tmp_errno]
+        raise OSError(std_errno, os.strerror(tmp_errno))
+    return SigSet(old_signals)
+
+
 class sigfd(object):
-    def __init__ (self, signals, flags=None):
+    """
+        signalfd(signal_set, [flags]) -> signalfd object
+        Create a signalfd object for receiving the set of signals specified as
+        a sigset object.
+    """
+
+    def __init__(self, signals, flags=None):
         if flags is None:
             self.flags = SFD_NONBLOCK
         else:
@@ -133,13 +141,13 @@ class sigfd(object):
 
         self.signals = signals
         self.fd = crt.signalfd(-1, self.signals.sigset, self.flags)
-        if self.fd==-1:
-            myerrno=ffi.errno
-            stderrno=errno.errorcode[myerrno]
+        if self.fd == -1:
+            myerrno = ffi.errno
+            stderrno = errno.errorcode[myerrno]
             raise OSError(stderrno, os.strerror(myerrno))
 
     def __enter__(self):
-        self.oldsignals=sigprocmask(self.signals, SIG_BLOCK)
+        self.oldsignals = sigprocmask(self.signals, SIG_BLOCK)
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -150,12 +158,14 @@ class sigfd(object):
     '''
         Return the integer file descriptor returned by signalfd(2).
     '''
+
     def fileno(self):
         return self.fd
 
     '''
         Close the signalfd object. It cannot be used after this call.
     '''
+
     def close(self):
         os.close(self.fd)
 
@@ -169,6 +179,7 @@ class sigfd(object):
             info = sigfd.info()
             print 'Received signal: %d' % info.ssi_signo
     '''
+
     def info(self):
         info = ffi.new('struct signalfd_siginfo *')
         buffer = ffi.buffer(info)

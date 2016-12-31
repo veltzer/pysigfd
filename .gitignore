@@ -4,3 +4,4 @@
 /dist/
 /sigfd.egg-info/
 __pycache__
+/.idea/workspace.xml
