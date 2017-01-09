@@ -1,6 +1,10 @@
 import setuptools
 import pypandoc
 
+import sys
+if not sys.version_info[0] == 3:
+    sys.exit("Sorry, only python version 3 is supported")
+
 setuptools.setup(
     name='pysigfd',
     version='1.3.0',
