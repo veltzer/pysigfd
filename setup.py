@@ -1,5 +1,4 @@
 import setuptools
-import pypandoc
 
 import sys
 if not sys.version_info[0] == 3:
@@ -10,7 +9,7 @@ setuptools.setup(
     version='1.3.0',
     description='pysigfd is a module to help you deal with signals within python using the linux signal file \
     description construct',
-    long_description=pypandoc.convert('README.md', 'rst'),
+    long_description='pysigfd is a module to help you deal with signals within python using the linux signal file description construct',
     url='https://github.com/veltzer/pysigfd',
     author='Mark Veltzer',
     author_email='mark.veltzer@gmail.com',
