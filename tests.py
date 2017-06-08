@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-
 import select
 import signal
 import unittest

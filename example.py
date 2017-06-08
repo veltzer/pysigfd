@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-
 """
 This is an example of using the git based signalfd module
 
