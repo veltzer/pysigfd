@@ -2,7 +2,7 @@
 .*.sw?
 /build/
 /dist/
-/src/*.egg-info/
+*.egg-info/
 __pycache__
 /.idea/workspace.xml
 /venv
