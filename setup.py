@@ -6,7 +6,7 @@ setuptools.setup(
     description='pysigfd is a module to help you deal with signals within python using the linux signal file \
     description construct',
     long_description='pysigfd is a module to help you deal with signals within python using the linux signal file description construct',
-    url='https://github.com/veltzer/pysigfd',
+    url='https://veltzer.github.io/pysigfd',
     download_url='https://github.com/veltzer/pysigfd',
     author='Mark Veltzer',
     author_email='mark.veltzer@gmail.com',
