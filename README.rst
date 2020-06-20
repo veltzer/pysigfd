@@ -1,66 +1,16 @@
-# sigfd for Python
+=========
+*pysigfd*
+=========
 
-This is a [cffi][1] based module for Python that makes available the
-`signalfd()` system call, as well as all of `sigsetops(3)`. The
-`signalfd()` calls allows your code to receive signals via a file
-descriptor, rather than via the normal asynchronous delivery method,
-which makes signals much more compatible with event based solutions
-(such as those using `select.select`, `select.poll`, and so forth).
+.. image:: https://img.shields.io/pypi/v/pysigfd
 
-For details, please see the `signalfd(2)` man page.
+.. image:: https://img.shields.io/github/license/veltzer/pysigfd
 
-## Requirements
+.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
 
-You will need the [cffi][2] module for Python.
+project website: https://veltzer.github.io/pysigfd
 
-[1]: http://cffi.readthedocs.org/
-[2]: https://pypi.python.org/pypi/cffi
+author: Mark Veltzer
 
-## Examples
+version: 1.3.4
 
-	import os # for getpid
-	import sys # for stdin
-	import select # for poll, POLLIN
-	import sigfd # for sigset, sigfd
-
-	# create a signal set containing all signals.
-	mask = sigfd.sigset()
-	mask.fill()
-
-	with sigfd.sigfd(mask) as fd:
-		poll = select.poll()
-		poll.register(fd, select.POLLIN)
-		poll.register(sys.stdin, select.POLLIN)
-
-		# Print signals as they are received until user presses <RETURN>.
-
-		print('=' * 70)
-		print('Send signals to this process (%d) or press RETURN to exit.' % os.getpid())
-		print('=' * 70)
-
-		while True:
-			events = dict(poll.poll())
-			if fd.fileno() in events:
-				info = fd.info()
-				print('received signal %d' % info.ssi_signo)
-			if sys.stdin.fileno() in events:
-				print('all done')
-				break
-
-## License
-
-sigalfd for Python
-Copyright (C) 2013 Lars Kellogg-Stedman <lars@oddbit.com>
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program. If not, see <http://www.gnu.org/licenses/>.

@@ -1,4 +1,12 @@
-# production
+# THIS IS AN AUTO-GENERATED FILE. DO NOT EDIT!
+# production requirements
 cffi
-# development tools
+# dev requirements
+pyclassifiers
 pypitools
+pydmt
+Sphinx
+# test requirements
+pylint
+pytest
+pyflakes
