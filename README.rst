@@ -12,5 +12,6 @@ project website: https://veltzer.github.io/pysigfd
 
 author: Mark Veltzer
 
-version: 1.3.4
+version: 1.3.5
+
 
