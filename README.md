@@ -17,8 +17,11 @@
 ![Downloads](https://pepy.tech/badge/pysigfd/week)
 
 
+
 linux signal file descriptor for python
 
 project website: <https://veltzer.github.io/pysigfd>
+
+chat with me at [![gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/veltzer/mark.veltzer)
 
 
