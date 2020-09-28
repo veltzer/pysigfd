@@ -16,6 +16,8 @@
 ![Downloads](https://pepy.tech/badge/pysigfd/month)
 ![Downloads](https://pepy.tech/badge/pysigfd/week)
 
+[![Known Vulnerabilities](https://snyk.io/test/github/veltzer/pysigfd/badge.svg?targetFile=requirements.txt)](https://snyk.io/test/github/veltzer/pysigfd?targetFile=requirements.txt)
+
 
 
 linux signal file descriptor for python
