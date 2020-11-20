@@ -2,3 +2,4 @@
 VERSION_STR = "1.3.5"
 DESCRIPTION = "linux signal file descriptor for python"
 APP_NAME = "pysigfd"
+LOGGER_NAME = "pysigfd"
