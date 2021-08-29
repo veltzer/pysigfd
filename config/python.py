@@ -23,6 +23,7 @@ dev_requires = [
     'pypitools',
     'pydmt',
     'Sphinx',
+    'pymakehelper',
 ]
 
 install_requires = list(setup_requires)

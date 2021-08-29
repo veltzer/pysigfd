@@ -14,7 +14,6 @@
 ![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)
 
 ![build](https://github.com/veltzer/pysigfd/workflows/build/badge.svg)
-
 linux signal file descriptor for python
 
 project website: https://veltzer.github.io/pysigfd

@@ -6,6 +6,7 @@ pyclassifiers
 pypitools
 pydmt
 Sphinx
+pymakehelper
 # test requirements
 pylint
 pytest
