@@ -56,7 +56,7 @@ class TestSigfd(unittest.TestCase):
         Test that we can read a signal from a signalfd
     '''
 
-    def test_alarm(self):
+    def testAlarm(self):
         mask = SigSet()
         mask.add(signal.SIGALRM)
 
