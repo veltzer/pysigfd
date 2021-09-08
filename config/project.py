@@ -18,9 +18,9 @@ project_long_description = project_short_description
 # keywords to put on html pages or for search, dont put the name of the project or my details
 # as they will be added automatically...
 project_keywords = [
-        'signalfd',
-        'python3',
-        'linux',
+    'signalfd',
+    'python3',
+    'linux',
 ]
 project_license = 'MIT'
 project_year_started = '2013'

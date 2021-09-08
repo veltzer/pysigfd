@@ -15,7 +15,9 @@ run_requires = [
 test_requires = [
     'pylint',
     'pytest',
+    'pytest-cov',
     'pyflakes',
+    'flake8',
 ]
 
 dev_requires = [
@@ -31,7 +33,7 @@ install_requires.extend(run_requires)
 
 python_requires = ">=3.6"
 
-extras_require={
+extras_require = {
 }
 test_os = "[ubuntu-18.04, ubuntu-20.04]"
 test_python = "[3.6, 3.7, 3.8]"

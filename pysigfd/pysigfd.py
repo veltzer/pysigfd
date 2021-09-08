@@ -14,10 +14,11 @@ crt = None
 
 
 def init():
+    # pylint: disable=global-statement
     global ffi, crt
     ffi = cffi.FFI()
     crt = ffi.dlopen(None)
-    ffi.cdef('''
+    ffi.cdef("""
         typedef unsigned int uint32_t;
         typedef int int32_t;
         typedef unsigned long int uint64_t;
@@ -51,46 +52,41 @@ def init():
             uint8_t pad[48]; /* Pad size to 128 bytes (allow for additional fields in the future) */
         };
         int signalfd(int fd, const sigset_t *mask, int flags);
-    ''' % (1024 / (8 * ffi.sizeof('unsigned long int'))))
+    """ % (1024 / (8 * ffi.sizeof("unsigned long int"))))
 
 
 init()
 
 
-class SigSet(object):
+class SigSet:
     """
         This is a thin wrapper over sigsetops(3)
     """
 
     def __init__(self, signals=None):
-        self.sigset = ffi.new('sigset_t *')
+        self.sigset = ffi.new("sigset_t *")
         self.empty()
         if signals is not None:
             self.sigset = signals
 
-    '''Initialize the signal set to empty'''
-
     def empty(self):
+        """ Initialize the signal set to empty """
         crt.sigemptyset(self.sigset)
 
-    '''Initialize the signal set to full, including all signals'''
-
     def fill(self):
+        """ Initialize the signal set to full, including all signals """
         crt.sigfillset(self.sigset)
 
-    '''Add the specified signal to the signal set'''
-
     def add(self, sig):
+        """ Add the specified signal to the signal set """
         crt.sigaddset(self.sigset, sig)
 
-    '''Remove the specified signal from the signal set'''
-
     def remove(self, sig):
+        """ Remove the specified signal from the signal set """
         crt.sigdelset(self.sigset, sig)
 
-    '''Test if the specified signal is a member of the signal set'''
-
     def ismember(self, sig):
+        """ Test if the specified signal is a member of the signal set """
         return crt.sigismember(self.sigset, sig) == 1
 
     def get_sigs(self):
@@ -106,18 +102,16 @@ class SigSet(object):
         return s
 
 
-'''
-    Examine and change blocked signals
-    - `signals` is a sigset object.
-    - `mode` controls how sigprocmask() interprets the signal mask (see
-    below)
-'''
-
-
 def sigprocmask(signals, mode=SIG_SETMASK):
+    """
+        Examine and change blocked signals
+        - `signals` is a sigset object.
+        - `mode` controls how sigprocmask() interprets the signal mask (see
+        below)
+    """
     if mode not in [SIG_BLOCK, SIG_UNBLOCK, SIG_SETMASK]:
-        raise ValueError('invalid mode')
-    old_signals = ffi.new('sigset_t *')
+        raise ValueError("invalid mode")
+    old_signals = ffi.new("sigset_t *")
     res = crt.sigprocmask(mode, signals.sigset, old_signals)
     if res == -1:
         tmp_errno = ffi.errno
@@ -126,7 +120,7 @@ def sigprocmask(signals, mode=SIG_SETMASK):
     return SigSet(old_signals)
 
 
-class sigfd(object):
+class sigfd:
     """
         signalfd(signal_set, [flags]) -> signalfd object
         Create a signalfd object for receiving the set of signals specified as
@@ -145,6 +139,7 @@ class sigfd(object):
             myerrno = ffi.errno
             stderrno = errno.errorcode[myerrno]
             raise OSError(stderrno, os.strerror(myerrno))
+        self.oldsignals = None
 
     def __enter__(self):
         self.oldsignals = sigprocmask(self.signals, SIG_BLOCK)
@@ -155,33 +150,26 @@ class sigfd(object):
         self.close()
         return False
 
-    '''
-        Return the integer file descriptor returned by signalfd(2).
-    '''
-
     def fileno(self):
+        """ Return the integer file descriptor returned by signalfd(2). """
         return self.fd
 
-    '''
-        Close the signalfd object. It cannot be used after this call.
-    '''
-
     def close(self):
+        """ Close the signalfd object. It cannot be used after this call. """
         os.close(self.fd)
 
-    '''
-        Return the next signalfd_siginfo structure available from the
-        signalfd file descriptor. The signalfd_siginfo structure has the
-        following attributes:
-    
-        For example::
-
-            info = sigfd.info()
-            print 'Received signal: %d' % info.ssi_signo
-    '''
-
     def info(self):
-        info = ffi.new('struct signalfd_siginfo *')
+        """
+            Return the next signalfd_siginfo structure available from the
+            signalfd file descriptor. The signalfd_siginfo structure has the
+            following attributes:
+
+            For example::
+
+                info = sigfd.info()
+                print "Received signal: %d" % info.ssi_signo
+        """
+        info = ffi.new("struct signalfd_siginfo *")
         buffer = ffi.buffer(info)
-        buffer[:] = os.read(self.fd, ffi.sizeof('struct signalfd_siginfo'))
+        buffer[:] = os.read(self.fd, ffi.sizeof("struct signalfd_siginfo"))
         return info

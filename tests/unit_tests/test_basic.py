@@ -6,6 +6,7 @@ from pysigfd.pysigfd import SigSet, sigfd, sigprocmask
 
 
 class TestSigfd(unittest.TestCase):
+    @unittest.skip("1")
     def test_sigset_create(self):
         """
                 Test that we can create a sigset object
@@ -67,6 +68,3 @@ class TestSigfd(unittest.TestCase):
             events = dict(poll.poll(2000))
             assert fd.fileno() in events
             assert fd.info().ssi_signo == signal.SIGALRM
-
-
-unittest.main()
