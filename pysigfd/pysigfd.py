@@ -18,21 +18,22 @@ def init():
     global ffi, crt
     ffi = cffi.FFI()
     crt = ffi.dlopen(None)
-    ffi.cdef("""
+    size = int(1024 / (8 * ffi.sizeof("unsigned long int")))
+    ffi.cdef(f"""
         typedef unsigned int uint32_t;
         typedef int int32_t;
         typedef unsigned long int uint64_t;
         typedef unsigned char uint8_t;
-        typedef struct {
-            unsigned long int __val[%d];
-            } sigset_t;
+        typedef struct {{
+            unsigned long int __val[{size}];
+            }} sigset_t;
         int sigemptyset(sigset_t *set);
         int sigfillset(sigset_t *set);
         int sigaddset(sigset_t *set, int signum);
         int sigdelset(sigset_t *set, int signum);
         int sigismember(const sigset_t *set, int signum);
         int sigprocmask(int how, const sigset_t *set, sigset_t *oldset);
-        struct signalfd_siginfo {
+        struct signalfd_siginfo {{
             uint32_t ssi_signo; /* Signal number */
             int32_t ssi_errno; /* Error number (unused) */
             int32_t ssi_code; /* Signal code */
@@ -50,9 +51,9 @@ def init():
             uint64_t ssi_stime; /* System CPU time consumed (SIGCHLD) */
             uint64_t ssi_addr; /* Address that generated signal (for hardware-generated signals) */
             uint8_t pad[48]; /* Pad size to 128 bytes (allow for additional fields in the future) */
-        };
+        }};
         int signalfd(int fd, const sigset_t *mask, int flags);
-    """ % (1024 / (8 * ffi.sizeof("unsigned long int"))))
+    """)
 
 
 init()
