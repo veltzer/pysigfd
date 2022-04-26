@@ -36,7 +36,7 @@ setuptools.setup(
         'cffi',
     ],
     extras_require={
-    },
+    }},
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Console',
