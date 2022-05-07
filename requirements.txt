@@ -1,6 +1,4 @@
 # THIS IS AN AUTO-GENERATED FILE. DO NOT EDIT!
-# production requirements
-cffi
 # dev requirements
 pyclassifiers
 pypitools
