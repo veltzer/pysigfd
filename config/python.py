@@ -8,6 +8,7 @@ make_requires = [
     "pyclassifiers",
     "pymakehelper",
     "pydmt",
+    "types-cffi",
 ]
 install_requires = [
     "cffi",
