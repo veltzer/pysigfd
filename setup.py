@@ -9,7 +9,7 @@ def get_readme():
 setuptools.setup(
     # the first three fields are a must according to the documentation
     name="pysigfd",
-    version="1.3.6",
+    version="1.3.7",
     packages=[
         "pysigfd",
     ],
