@@ -6,7 +6,7 @@ project website: https://veltzer.github.io/pysigfd
 
 author: Mark Veltzer
 
-version: 1.3.5
+version: 1.3.6
 
 ![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)
 
