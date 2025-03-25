@@ -1,3 +1,7 @@
+"""
+pysigfd.py
+"""
+
 import os
 import errno
 import cffi
