@@ -6,5 +6,5 @@ pydmt
 pylint
 pymakehelper
 pytest
-pytest-cov
+ruff
 types-cffi
