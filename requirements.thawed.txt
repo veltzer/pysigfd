@@ -1,12 +1,10 @@
 # THIS IS AN AUTO-GENERATED FILE. DO NOT EDIT!
-pyclassifiers
 cffi
-pymakehelper
+mypy
+pyclassifiers
 pydmt
-types-cffi
 pylint
+pymakehelper
 pytest
 pytest-cov
-pyflakes
-flake8
-mypy
+types-cffi
