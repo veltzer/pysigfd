@@ -7,8 +7,10 @@ install_requires: list[str] = [
     "cffi",
 ]
 build_requires: list[str] = [
+    "hatch",
     "pydmt",
     "pymakehelper",
+    "pycmdtools",
     # types
     "types-cffi",
 ]

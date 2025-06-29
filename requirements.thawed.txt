@@ -1,7 +1,9 @@
 # THIS IS AN AUTO-GENERATED FILE. DO NOT EDIT!
 cffi
+hatch
 mypy
 pyclassifiers
+pycmdtools
 pydmt
 pylint
 pymakehelper
