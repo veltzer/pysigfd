@@ -17,11 +17,10 @@ class TestSigfd(unittest.TestCase):
         """
         assert SigSet() is not None
 
-    """
-        Test that add/delete/addmember behave sanely
-    """
-
     def test_sigset_membership(self):
+        """
+        Test that add/delete/addmember behave sanely
+        """
         signals = SigSet()
         signals.add(signal.SIGHUP)
         signals.add(signal.SIGINT)
@@ -30,20 +29,18 @@ class TestSigfd(unittest.TestCase):
         signals.remove(signal.SIGINT)
         assert not signals.ismember(signal.SIGINT)
 
-    """
-        Test that we can create a signalfd object
-    """
-
     def test_signalfd_create(self):
+        """
+        Test that we can create a signalfd object
+        """
         signals = SigSet()
         assert sigfd(signals) is not None
 
-    """
+    def test_sigmask_restore(self):
+        """
         Test that signal mask has been restored after signalfd context
         manager exits
-    """
-
-    def test_sigmask_restore(self):
+        """
         empty = SigSet()
         orig = sigprocmask(empty)
         mask = SigSet()
@@ -57,11 +54,10 @@ class TestSigfd(unittest.TestCase):
         print(orig.get_set())
         # assert all([x == final.sigset.__val[i] for i,x in enumerate(orig.sigset.__val)])
 
-    """
-        Test that we can read a signal from a signalfd
-    """
-
     def testAlarm(self):
+        """
+        Test that we can read a signal from a signalfd
+        """
         mask = SigSet()
         mask.add(signal.SIGALRM)
 
