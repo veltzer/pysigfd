@@ -32,12 +32,11 @@ version: 1.3.7
 ![PyPI - Downloads](https://img.shields.io/pypi/dw/pysigfd)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/pysigfd)
 
-
-
 ## contact me
+
 [mailto](mailto:mark.veltzer@gmail.com)
 ![gitter](https://img.shields.io/gitter/room/veltzer/mark.veltzer)
 ![discord](https://img.shields.io/discord/719336281624281119)
 ![discord](https://img.shields.io/discord/719336282194444302)
 
-Mark Veltzer, Copyright © 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025
+Mark Veltzer, Copyright © 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026
