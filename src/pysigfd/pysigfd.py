@@ -2,8 +2,9 @@
 pysigfd.py
 """
 
-import os
 import errno
+import os
+
 import cffi
 
 SFD_NONBLOCK = 0o00004000
@@ -95,13 +96,13 @@ class SigSet:
         return crt.sigismember(self.sigset, sig) == 1
 
     def get_sigs(self):
-        for i in range(0, 32):
+        for i in range(32):
             if self.ismember(i):
                 yield i
 
     def get_set(self):
         s = set()
-        for i in range(0, 32):
+        for i in range(32):
             if self.ismember(i):
                 s.add(i)
         return s
