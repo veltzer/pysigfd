@@ -11,8 +11,9 @@ git@github.com:larsks/python-signalfd.git
 """
 
 import os
-import sys
 import select
+import sys
+
 import pysigfd
 
 # create a signal set containing all signals.
@@ -29,14 +30,14 @@ with pysigfd.pysigfd.sigfd(mask) as fd:
     # Print signals as they are received until user presses <RETURN>.
 
     print("=" * 70)
-    print("Send signals to this process (%d) or press RETURN to exit." % os.getpid())
+    print(f"Send signals to this process ({os.getpid()}) or press RETURN to exit.")
     print("=" * 70)
 
     while True:
         events = dict(poll.poll())
         if fd.fileno() in events:
             info = fd.info()
-            print("received signal %d" % info.ssi_signo)
+            print(f"received signal {info.ssi_signo}")
         if sys.stdin.fileno() in events:
             print("all done")
             break
