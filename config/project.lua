@@ -5,3 +5,4 @@ KEYWORDS = {
     "python3",
     "linux",
 }
+PYPI = true
