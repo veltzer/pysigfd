@@ -83,5 +83,9 @@ prerelease = "disallow"
 
 [dependency-groups]
 dev = [
+    "mypy",
+    "pylint",
+    "pytest",
+    "ruff",
     "types-cffi",
 ]
