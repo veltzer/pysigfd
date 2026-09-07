@@ -87,5 +87,6 @@ dev = [
     "pylint",
     "pytest",
     "ruff",
+    "sphinx",
     "types-cffi",
 ]
