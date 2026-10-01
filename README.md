@@ -11,8 +11,6 @@ author: Mark Veltzer
 
 version: 1.3.7
 
-![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)
-
 ## github
 
 ![License](https://img.shields.io/github/license/veltzer/pysigfd)
