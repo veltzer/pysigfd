@@ -5,7 +5,7 @@
 
 description: linux signal file descriptor for python
 
-project website: https://veltzer.github.io/pysigfd
+project website: <https://veltzer.github.io/pysigfd>
 
 author: Mark Veltzer
 
