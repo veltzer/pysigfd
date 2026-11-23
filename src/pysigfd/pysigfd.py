@@ -4,6 +4,7 @@ pysigfd.py
 
 import errno
 import os
+import typing
 
 import cffi
 
@@ -14,15 +15,12 @@ SIG_BLOCK = 0
 SIG_UNBLOCK = 1
 SIG_SETMASK = 2
 
-ffi = None
-crt = None
+ffi = cffi.FFI()
+crt: typing.Any = ffi.dlopen(None)
 
 
 def init():
-    # pylint: disable=global-statement
-    global ffi, crt
-    ffi = cffi.FFI()
-    crt = ffi.dlopen(None)
+    """ Declare the C types and functions used by this module (called once at import) """
     size = int(1024 / (8 * ffi.sizeof("unsigned long int")))
     ffi.cdef(f"""
         typedef unsigned int uint32_t;
@@ -126,7 +124,7 @@ def sigprocmask(signals, mode=SIG_SETMASK):
     return SigSet(old_signals)
 
 
-class sigfd:
+class SigFd:
     """
         signalfd(signal_set, [flags]) -> signalfd object
         Create a signalfd object for receiving the set of signals specified as
@@ -164,7 +162,7 @@ class sigfd:
         """ Close the signalfd object. It cannot be used after this call. """
         os.close(self.fd)
 
-    def info(self):
+    def info(self) -> typing.Any:
         """
             Return the next signalfd_siginfo structure available from the
             signalfd file descriptor. The signalfd_siginfo structure has the
@@ -172,10 +170,14 @@ class sigfd:
 
             For example::
 
-                info = sigfd.info()
+                info = SigFd.info()
                 print "Received signal: %d" % info.ssi_signo
         """
         info = ffi.new("struct signalfd_siginfo *")
         buffer = ffi.buffer(info)
         buffer[:] = os.read(self.fd, ffi.sizeof("struct signalfd_siginfo"))
         return info
+
+
+# backwards compatible name
+sigfd = SigFd

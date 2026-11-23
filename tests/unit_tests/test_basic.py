@@ -54,7 +54,7 @@ class TestSigfd(unittest.TestCase):
         print(orig.get_set())
         # assert all([x == final.sigset.__val[i] for i,x in enumerate(orig.sigset.__val)])
 
-    def testAlarm(self):
+    def test_alarm(self):
         """
         Test that we can read a signal from a signalfd
         """
