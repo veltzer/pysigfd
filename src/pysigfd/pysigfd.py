@@ -143,14 +143,15 @@ class SigFd:
             myerrno = ffi.errno
             stderrno = errno.errorcode[myerrno]
             raise OSError(stderrno, os.strerror(myerrno))
-        self.oldsignals = None
+        self.oldsignals: SigSet | None = None
 
     def __enter__(self):
         self.oldsignals = sigprocmask(self.signals, SIG_BLOCK)
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        sigprocmask(self.oldsignals)
+        if self.oldsignals is not None:
+            sigprocmask(self.oldsignals)
         self.close()
         return False
 
