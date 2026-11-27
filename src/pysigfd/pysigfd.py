@@ -5,8 +5,14 @@ pysigfd.py
 import errno
 import os
 import typing
+from typing import Self
 
 import cffi
+
+if typing.TYPE_CHECKING:
+    from types import TracebackType
+
+    from _cffi_backend import _CDataBase
 
 SFD_NONBLOCK = 0o00004000
 SFD_CLOEXEC = 0o02000000
@@ -19,7 +25,7 @@ ffi = cffi.FFI()
 crt: typing.Any = ffi.dlopen(None)
 
 
-def init():
+def init() -> None:
     """ Declare the C types and functions used by this module (called once at import) """
     size = int(1024 / (8 * ffi.sizeof("unsigned long int")))
     ffi.cdef(f"""
@@ -67,29 +73,29 @@ class SigSet:
         This is a thin wrapper over sigsetops(3)
     """
 
-    def __init__(self, signals=None):
+    def __init__(self, signals: _CDataBase | None = None) -> None:
         self.sigset = ffi.new("sigset_t *")
         self.empty()
         if signals is not None:
             self.sigset = signals
 
-    def empty(self):
+    def empty(self) -> None:
         """ Initialize the signal set to empty """
         crt.sigemptyset(self.sigset)
 
-    def fill(self):
+    def fill(self) -> None:
         """ Initialize the signal set to full, including all signals """
         crt.sigfillset(self.sigset)
 
-    def add(self, sig):
+    def add(self, sig: int) -> None:
         """ Add the specified signal to the signal set """
         crt.sigaddset(self.sigset, sig)
 
-    def remove(self, sig):
+    def remove(self, sig: int) -> None:
         """ Remove the specified signal from the signal set """
         crt.sigdelset(self.sigset, sig)
 
-    def ismember(self, sig):
+    def ismember(self, sig: int):
         """ Test if the specified signal is a member of the signal set """
         return crt.sigismember(self.sigset, sig) == 1
 
@@ -98,7 +104,7 @@ class SigSet:
             if self.ismember(i):
                 yield i
 
-    def get_set(self):
+    def get_set(self) -> set[int]:
         s = set()
         for i in range(32):
             if self.ismember(i):
@@ -106,7 +112,7 @@ class SigSet:
         return s
 
 
-def sigprocmask(signals, mode=SIG_SETMASK):
+def sigprocmask(signals: SigSet, mode: int = SIG_SETMASK) -> SigSet:
     """
         Examine and change blocked signals
         - `signals` is a sigset object.
@@ -131,7 +137,7 @@ class SigFd:
         a sigset object.
     """
 
-    def __init__(self, signals, flags=None):
+    def __init__(self, signals: SigSet, flags: int | None = None) -> None:
         if flags is None:
             self.flags = SFD_NONBLOCK
         else:
@@ -145,11 +151,11 @@ class SigFd:
             raise OSError(stderrno, os.strerror(myerrno))
         self.oldsignals: SigSet | None = None
 
-    def __enter__(self):
+    def __enter__(self) -> Self:
         self.oldsignals = sigprocmask(self.signals, SIG_BLOCK)
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(self, exc_type: type[BaseException] | None, exc_val: BaseException | None, exc_tb: TracebackType | None) -> bool:
         if self.oldsignals is not None:
             sigprocmask(self.oldsignals)
         self.close()
@@ -159,7 +165,7 @@ class SigFd:
         """ Return the integer file descriptor returned by signalfd(2). """
         return self.fd
 
-    def close(self):
+    def close(self) -> None:
         """ Close the signalfd object. It cannot be used after this call. """
         os.close(self.fd)
 
