@@ -52,7 +52,6 @@ class TestSigfd(unittest.TestCase):
         assert orig.get_set() == final.get_set()
         print(final.get_set())
         print(orig.get_set())
-        # assert all([x == final.sigset.__val[i] for i,x in enumerate(orig.sigset.__val)])
 
     def test_alarm(self):
         """
